@@ -1,5 +1,7 @@
 #include "MUFFINS_Radio.h"
 
+volatile bool RadioLib_Interupt::_action_done = true;
+
 Radio::Radio(String component_name, void (*info_function)(String), void (*error_function)(String)) : Component_Base(component_name, info_function, error_function)
 {
   _runtime_state.action_status_code = RADIOLIB_ERR_NONE;

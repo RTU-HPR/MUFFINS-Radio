@@ -6,7 +6,7 @@
 // Flag for interrupt functions
 namespace RadioLib_Interupt
 {
-  volatile bool _action_done = true;
+  volatile bool _action_done;
 
   /**
     * @brief Interrupt function for setting action done flag

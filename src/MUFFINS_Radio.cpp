@@ -1,5 +1,12 @@
 #include "MUFFINS_Radio.h"
 
+volatile bool _action_done = true;
+
+void set_action_done_flag(void)
+{
+  _action_done = true;
+}
+
 Radio::Radio(String component_name, void (*info_function)(String), void (*error_function)(String)) : Component_Base(component_name, info_function, error_function)
 {
   _runtime_state.action_status_code = RADIOLIB_ERR_NONE;
@@ -9,11 +16,6 @@ Radio::Radio(String component_name, void (*info_function)(String), void (*error_
 Radio::~Radio()
 {
   return;
-}
-
-void set_action_done_flag(void)
-{
-  _action_done = true;
 }
 
 bool Radio::begin(const Config &config)

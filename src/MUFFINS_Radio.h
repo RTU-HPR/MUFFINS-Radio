@@ -3,13 +3,13 @@
 #include <RadioLib.h>
 #include <MUFFINS_Component_Base.h>
 
-// Flags for interrupt functions
-volatile bool _action_done = true;
+// Flag for interrupt functions
+volatile bool _action_done;
 
 /**
- * @brief Set the flag that a action has finished
- */
-static void set_action_done_flag(void);
+ * @brief Interrupt function for setting action done flag
+*/
+void set_action_done_flag(void);
 
 class Radio : public Component_Base
 {

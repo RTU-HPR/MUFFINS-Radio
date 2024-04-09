@@ -1,12 +1,5 @@
 #include "MUFFINS_Radio.h"
 
-_action_done = true;
-
-void set_action_done_flag(void)
-{
-  _action_done = true;
-}
-
 Radio::Radio(String component_name, void (*info_function)(String), void (*error_function)(String)) : Component_Base(component_name, info_function, error_function)
 {
   _runtime_state.action_status_code = RADIOLIB_ERR_NONE;
@@ -38,7 +31,7 @@ bool Radio::begin(const Config &config)
     return false;
   }
   // Set interrupt behaviour
-  _radio.setPacketReceivedAction(set_action_done_flag);
+  _radio.setPacketReceivedAction(RadioLib_Interupt::set_action_done_flag);
   _runtime_state.last_action= Last_Action_Type::Standby;
 
   if (!_configure())
@@ -110,20 +103,20 @@ bool Radio::transmit_bytes(uint8_t *bytes, size_t length)
   }
 
   // if radio did something that is not sending data before and it hasn't timed out. Time it out
-  if (!_action_done && _runtime_state.last_action != Last_Action_Type::Transmit)
+  if (!RadioLib_Interupt::_action_done && _runtime_state.last_action != Last_Action_Type::Transmit)
   {
-    _action_done = true;
+    RadioLib_Interupt::_action_done = true;
   }
 
   // If already transmitting, don't continue
-  if (_action_done == false)
+  if (RadioLib_Interupt::_action_done == false)
   {
     return false;
   }
   else
   {
     // else reset flag
-    _action_done = false;
+    RadioLib_Interupt::_action_done = false;
   }
 
   // Clean up from the previous time
@@ -152,14 +145,14 @@ bool Radio::receive_bytes()
   }
 
   // If already doing something, don't continue
-  if (_action_done == false)
+  if (RadioLib_Interupt::_action_done == false)
   {
     return false;
   }
   else
   {
     // else reset flag
-    _action_done = false;
+    RadioLib_Interupt::_action_done = false;
   }
   // Put into standby to try reading data
   _radio.standby();

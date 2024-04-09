@@ -1,6 +1,6 @@
 #include "MUFFINS_Radio.h"
 
-volatile bool _action_done = true;
+_action_done = true;
 
 void set_action_done_flag(void)
 {

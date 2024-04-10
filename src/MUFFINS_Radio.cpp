@@ -1,6 +1,18 @@
 #include "MUFFINS_Radio.h"
 
-volatile bool RadioLib_Interupt::_action_done = true;
+volatile bool _action_done = true;
+
+namespace RadioLib_Interupt
+{
+  /**
+    * @brief Interrupt function for setting action done flag
+  */
+  void set_action_done_flag(void) 
+  {
+    _action_done = true;
+  }
+};
+
 
 Radio::Radio(String component_name, void (*info_function)(String), void (*error_function)(String)) : Component_Base(component_name, info_function, error_function)
 {
@@ -105,20 +117,20 @@ bool Radio::transmit_bytes(uint8_t *bytes, size_t length)
   }
 
   // if radio did something that is not sending data before and it hasn't timed out. Time it out
-  if (!RadioLib_Interupt::_action_done && _runtime_state.last_action != Last_Action_Type::Transmit)
+  if (!_action_done && _runtime_state.last_action != Last_Action_Type::Transmit)
   {
-    RadioLib_Interupt::_action_done = true;
+    _action_done = true;
   }
 
   // If already transmitting, don't continue
-  if (RadioLib_Interupt::_action_done == false)
+  if (_action_done == false)
   {
     return false;
   }
   else
   {
     // else reset flag
-    RadioLib_Interupt::_action_done = false;
+    _action_done = false;
   }
 
   // Clean up from the previous time
@@ -147,14 +159,14 @@ bool Radio::receive_bytes()
   }
 
   // If already doing something, don't continue
-  if (RadioLib_Interupt::_action_done == false)
+  if (_action_done == false)
   {
     return false;
   }
   else
   {
     // else reset flag
-    RadioLib_Interupt::_action_done = false;
+    _action_done = false;
   }
   // Put into standby to try reading data
   _radio.standby();

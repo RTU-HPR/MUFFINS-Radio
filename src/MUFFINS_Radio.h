@@ -3,20 +3,6 @@
 #include <RadioLib.h>
 #include <MUFFINS_Component_Base.h>
 
-// Flag for interrupt functions
-namespace RadioLib_Interupt
-{
-  volatile bool _action_done;
-
-  /**
-    * @brief Interrupt function for setting action done flag
-  */
-  void set_action_done_flag(void) 
-  {
-    _action_done = true;
-  }
-};
-
 class Radio : public Component_Base
 {
 public:

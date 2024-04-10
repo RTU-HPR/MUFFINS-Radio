@@ -22,10 +22,10 @@ public:
     SPIClass *spi_bus; // Example &SPI
   };
 
-  struct Received_Data_Bytes
+  struct Received_Data
   {
     uint8_t *bytes;
-    uint16_t data_length;
+    uint16_t length;
     float rssi;
     float snr;
     double frequency;
@@ -70,7 +70,7 @@ public:
    */
   ~Radio();
 
-  Received_Data_Bytes received_data_bytes;
+  Received_Data received_data;
 
   /**
    * @brief

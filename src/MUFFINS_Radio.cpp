@@ -1,7 +1,10 @@
 #include "MUFFINS_Radio.h"
 
+// For the interrupt functionality of RadioLib
+// For some reason, I couldn't properly include this in the header file
+// So I had to include it here
+// It is something to do with volatile variables
 volatile bool _action_done = true;
-
 namespace RadioLib_Interupt
 {
   /**
@@ -12,7 +15,6 @@ namespace RadioLib_Interupt
     _action_done = true;
   }
 };
-
 
 Radio::Radio(String component_name, void (*info_function)(String), void (*error_function)(String)) : Component_Base(component_name, info_function, error_function)
 {
@@ -184,11 +186,11 @@ bool Radio::receive_bytes()
       error("Receiving failed with status code: " + String(_runtime_state.action_status_code));
     }
 
-    received_data_bytes.bytes = received_bytes;
-    received_data_bytes.data_length = data_length;
-    received_data_bytes.rssi = _radio.getRSSI();
-    received_data_bytes.snr = _radio.getSNR();
-    received_data_bytes.frequency = _runtime_state.frequency;
+    received_data.bytes = received_bytes;
+    received_data.length = data_length;
+    received_data.rssi = _radio.getRSSI();
+    received_data.snr = _radio.getSNR();
+    received_data.frequency = _runtime_state.frequency;
 
     if (_config.frequency_correction)
     {

@@ -7,10 +7,18 @@
 volatile bool _action_done = true;
 namespace RadioLib_Interupt
 {
+
+/*
+If compiling for ESP boards, specify that this function is used within a interrupt routine
+and such should be stored in the RAM and not the flash memory
+*/
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
   /**
-    * @brief Interrupt function for setting action done flag
-  */
-  void set_action_done_flag(void) 
+   * @brief Interrupt function for setting action done flag
+   */
+  void set_action_done_flag(void)
   {
     _action_done = true;
   }
@@ -34,9 +42,9 @@ bool Radio::begin(const Config &config)
 
   // Set the used frequency to the inital one
   _runtime_state.frequency = _config.frequency;
-  
+
   _radio = new Module(_config.cs, _config.dio1, _config.reset, _config.dio0, *(_config.spi_bus));
-  
+
   // Try to initialize communication with LoRa
   _runtime_state.action_status_code = _radio.begin();
 
@@ -48,7 +56,7 @@ bool Radio::begin(const Config &config)
   }
   // Set interrupt behaviour
   _radio.setPacketReceivedAction(RadioLib_Interupt::set_action_done_flag);
-  _runtime_state.last_action= Last_Action_Type::Standby;
+  _runtime_state.last_action = Last_Action_Type::Standby;
 
   if (!_configure())
   {

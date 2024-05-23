@@ -121,6 +121,22 @@ bool Radio::_configure()
   return true;
 }
 
+bool Radio::reconfigure(const Config &config)
+{
+  // Copy the config to the local one
+  _config = config;
+
+  if (!_configure())
+  {
+    error("Configuration failed!");
+    return false;
+  }
+  info("Reconfigured");
+
+  return true;
+}
+
+
 bool Radio::transmit_bytes(uint8_t *bytes, size_t length)
 {
   if (!initialized())

@@ -52,6 +52,8 @@ private:
   // Local config object
   Config _config;
 
+  Module* _module;
+
   /**
    * @brief Configure radio module modulation parameters (frequency, power, etc.) for exact things that are set check the function
    *

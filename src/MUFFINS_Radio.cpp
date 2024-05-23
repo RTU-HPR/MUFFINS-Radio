@@ -32,6 +32,7 @@ Radio::Radio(String component_name, void (*info_function)(String), void (*error_
 
 Radio::~Radio()
 {
+  delete _module;
   return;
 }
 
@@ -43,7 +44,8 @@ bool Radio::begin(const Config &config)
   // Set the used frequency to the inital one
   _runtime_state.frequency = _config.frequency;
 
-  _radio = new Module(_config.cs, _config.dio1, _config.reset, _config.dio0, *(_config.spi_bus));
+  _module = new Module(_config.cs, _config.dio1, _config.reset, _config.dio0, *(_config.spi_bus));
+  _radio = _module;
 
   // Try to initialize communication with LoRa
   _runtime_state.action_status_code = _radio.begin();

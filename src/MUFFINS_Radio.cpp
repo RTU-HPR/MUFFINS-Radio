@@ -112,11 +112,13 @@ bool Radio::_configure()
     return false;
   };
 
-  if (_radio.setDio2AsRfSwitch(true) != RADIOLIB_ERR_NONE)
-  {
-    error("Failed to set DIO2 as RF switch");
-    return false;
-  }
+  #if RADIO_MODULE == 1
+    if (_radio.setDio2AsRfSwitch(true) != RADIOLIB_ERR_NONE)
+    {
+      error("Failed to set DIO2 as RF switch");
+      return false;
+    }
+  #endif
 
   return true;
 }

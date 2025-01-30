@@ -3,6 +3,11 @@
 #include <RadioLib.h>
 #include <MUFFINS_Component_Base.h>
 
+// Define the radio module to be used
+// 1 for SX1268
+// 2 for SX1278
+#define RADIO_MODULE 1
+
 class Radio : public Component_Base
 {
 public:
@@ -47,7 +52,13 @@ private:
   } _runtime_state;
 
   // Radio object
-  SX1268 _radio = new Module(-1, -1, -1, -1);
+  #if RADIO_MODULE == 1
+    SX1268 _radio = new Module(-1, -1, -1, -1);
+  #elif RADIO_MODULE == 2
+    SX1278 _radio = new Module(-1, -1, -1, -1);
+  #else
+    #error "Radio module not supported"
+  #endif
 
   // Local config object
   Config _config;
